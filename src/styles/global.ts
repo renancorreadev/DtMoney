@@ -30,7 +30,7 @@ export const GlobalStyle = createGlobalStyle`
      }
  }
 
- button: {
+ button {
      cursor: pointer;
  }
 
@@ -39,7 +39,22 @@ export const GlobalStyle = createGlobalStyle`
      cursor: not-allowed 
  }
 
- .react-modal-overlay{
+
+ body{
+     background: #ededed;
+     -webkit-font-smoothing: antialiased;
+ }
+
+ body, input, textarea, button {
+     font-family: 'Poppins', sans-serif;
+     font-weight: 400;
+ }
+
+ h1 h2 h3 h4 h5 h6, strong{
+     font-weight: 600;
+ }
+
+  .react-modal-overlay{
     background: rgba(0,0,0,0.5);
     
     position: fixed;
@@ -61,20 +76,19 @@ export const GlobalStyle = createGlobalStyle`
     position: relative;
     border-radius: 0.24rem;
 }
- body{
-     background: #ededed;
-     -webkit-font-smoothing: antialiased;
- }
 
- body, input, textarea, button {
-     font-family: 'Poppins', sans-serif;
-     font-weight: 400;
- }
+.react-modal-close{
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    border: 0;
+    background: transparent;
 
- h1 h2 h3 h4 h5 h6, strong{
-     font-weight: 600;
- }
-
+    transition: 0.2s;
+    &:hover{
+        filter: brightness(.8);
+    }
+}
 
 
 
