@@ -1,10 +1,11 @@
 import Modal from 'react-modal'
-import { api } from '../../services/api'
 import { Container, TransactionTypeContainer, RadioBox } from './styles'
+import { FormEvent, useState, useContext } from 'react'
+import { TransactionsContext } from '../../TransactionContext'
+
 import close from '../../assets/close.svg'
 import imcomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
-import { useState } from 'react'
 
 Modal.setAppElement('#root')
 interface NewTransactionModalProps {
@@ -16,21 +17,26 @@ export function NewTransactionModal({
   isOpen,
   onRequestClose,
 }: NewTransactionModalProps) {
+  const { createTransaction } = useContext(TransactionsContext)
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState('')
-  const [value, setValue] = useState(0)
+  const [amount, setAmount] = useState(0)
   const [type, setType] = useState('deposit')
 
-  function handleCreateNewTransaction(event: React.FormEvent) {
+  async function handleCreateNewTransaction(event: FormEvent) {
     event.preventDefault()
-    const data = {
-      title,
-      category,
-      value,
-      type,
-    }
 
-    api.post('/transactions', data)
+    await createTransaction({
+      title,
+      amount,
+      category,
+      type,
+    })
+    setTitle('')
+    setAmount(0)
+    setCategory('')
+    setType('deposit')
+    onRequestClose()
   }
   return (
     <Modal
@@ -58,8 +64,8 @@ export function NewTransactionModal({
         <input
           type="number"
           placeholder="Valor"
-          value={value}
-          onChange={(event) => setValue(Number(event.target.value))}
+          value={amount}
+          onChange={(event) => setAmount(Number(event.target.value))}
         />
 
         <TransactionTypeContainer>
@@ -74,9 +80,7 @@ export function NewTransactionModal({
             <img src={imcomeImg} alt="Entrada" />
             <span>Entrada</span>
           </RadioBox>
-        </TransactionTypeContainer>
 
-        <TransactionTypeContainer>
           <RadioBox
             type="button"
             onClick={() => {
